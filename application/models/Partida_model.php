@@ -6,8 +6,10 @@ class Partida_model extends CI_Model {
 
     public function getOne($id) {
         if ($id > 0) {
-            $this->db->select(self::table . '.*, tb_rodada.nome AS nome_rodada');
+            $this->db->select(self::table . '.*, time1.nome AS nome_time1, time2.nome AS nome_time2, tb_rodada.nome AS nome_rodada');
             $this->db->join('tb_rodada', 'tb_rodada.id = tb_partida.cd_rodada', 'inner');
+            $this->db->join('tb_time AS time1', 'time1.id = tb_partida.cd_time1', 'inner');
+            $this->db->join('tb_time AS time2', 'time2.id = tb_partida.cd_time2', 'inner');
             $this->db->where(self::table. ".id", $id);
             $query = $this->db->get(self::table);
             return $query->row(0);
@@ -17,8 +19,10 @@ class Partida_model extends CI_Model {
     }
 
     public function get() {
-        $this->db->select(self::table . '.*,  tb_rodada.nome AS nome_rodada');
-        $this->db->join('tb_rodada', 'tb_rodada.id = tb_partida.cd_rodada', 'inner');
+        $this->db->select(self::table . '.*, time1.nome AS nome_time1, time2.nome AS nome_time2, tb_rodada.nome AS nome_rodada');
+            $this->db->join('tb_rodada', 'tb_rodada.id = tb_partida.cd_rodada', 'inner');
+            $this->db->join('tb_time AS time1', 'time1.id = tb_partida.cd_time1', 'inner');
+            $this->db->join('tb_time AS time2', 'time2.id = tb_partida.cd_time2', 'inner');
         $query = $this->db->get(self::table);
         return $query->result();
     }
