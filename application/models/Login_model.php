@@ -14,8 +14,9 @@ class Login_model extends CI_Model {
     }
     
    public function get($params) {
-        $this->db->select(self::table . '.*, tb_usuario.id, token.apikey ');
+        $this->db->select(self::table . '.*, tb_usuario.id,tb_equipe.nome as nomeequipe, token.apikey ');
         $this->db->join('token', 'token.cd_usuario=' . self::table . '.id');
+        $this->db->join('tb_equipe', 'tb_equipe.cd_usuario=' . self::table . '.id');
         $query = $this->db->get_where(self::table, $params);
         return $query->row();
     }

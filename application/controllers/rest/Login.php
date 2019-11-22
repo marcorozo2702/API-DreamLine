@@ -29,7 +29,7 @@ class Login extends CI_Controller {
             if ($login) {
                 $this->output
                         ->set_status_header(200)
-                        ->set_output(json_encode(array('id' => $login->id, 'nome' => $login->nome, 'email' => $login->email,'token'=>$login->apikey), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+                        ->set_output(json_encode(array('id' => $login->id, 'nome' => $login->nome, 'email' => $login->email,'token'=>$login->apikey, 'nomeequipe' => $login->nomeequipe), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
             } else {
                 $this->output
                         ->set_status_header(400)

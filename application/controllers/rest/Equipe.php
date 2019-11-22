@@ -56,15 +56,9 @@
                 'cd_usuario' => $this->post('cd_usuario')
             );
             if ($this->Equipe_model->insert($data)) {
-                $this->set_response([
-                    'status' => true,
-                    'message' => 'Equipe inserida!'
-                        ], REST_Controller_Definitions::HTTP_OK);
+                $this->set_response(1, REST_Controller_Definitions::HTTP_OK);
             } else {
-                $this->set_response([
-                    'status' => false,
-                    'error' => 'Falha ao inserir equipe'
-                        ], REST_Controller_Definitions::HTTP_BAD_REQUEST);
+                $this->set_response(0, REST_Controller_Definitions::HTTP_BAD_REQUEST);
             }
         }
 
