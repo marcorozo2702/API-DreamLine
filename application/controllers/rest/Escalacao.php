@@ -24,27 +24,27 @@
     require APPPATH . '/libraries/REST_Controller_Definitions.php';
     require APPPATH . '/libraries/Format.php';
 
-
-    class Equipe extends REST_Controller {
+    class Escalacao extends REST_Controller {
 
         public function __construct() {
             parent::__construct();
-            $this->load->model('Equipe_model');
-            $this->load->model('Usuario_model');
+            $this->load->model('Escalacao_model');
+            //hora padrao definida com o fuso horario de SP
+            date_default_timezone_set('America/Sao_Paulo');
         }
 
         public function index_get() {
             $id = (int) $this->get('id');
             if($id <= 0) {
-                $data = $this->Equipe_model->get();
+                $data = $this->Escalacao_model->get();
             } else {
-                $data = $this->Equipe_model->getOne($id);
+                $data = $this->Escalacao_model->getOne($id);
             }
             $this->set_response($data, REST_Controller_Definitions::HTTP_OK);
         }
 
         public function index_post() {
-            if ((!$this->post('nomeequipe')) || (!$this->post('cd_usuario'))) {
+            if ((!$this->post('cd_equipe')) || (!$this->post('cd_jogador')) || (!$this->post('cd_rodada'))) {
                 $this->set_response([
                     'status' => false,
                     'error' => 'Campo não preenchidos'
@@ -52,13 +52,23 @@
                 return;
             }
             $data = array(
-                'nomeequipe' => $this->post('nomeequipe'),
-                'cd_usuario' => $this->post('cd_usuario')
+                'cd_equipe' => $this->post('cd_equipe'),
+                'cd_jogador' => $this->post('cd_jogador'),
+                'cd_rodada' => $this->post('cd_rodada'),
+                'data_hora' => date('Y-m-d H:i:s')
+
+
             );
-            if ($this->Equipe_model->insert($data)) {
-                $this->set_response(1, REST_Controller_Definitions::HTTP_OK);
+            if ($this->Escalacao_model->insert($data)) {
+                $this->set_response([
+                    'status' => true,
+                    'message' => 'Escalação inserida.'
+                        ], REST_Controller_Definitions::HTTP_OK);
             } else {
-                $this->set_response(0, REST_Controller_Definitions::HTTP_BAD_REQUEST);
+                $this->set_response([
+                    'status' => false,
+                    'error' => 'Falha ao inserir escalação'
+                        ], REST_Controller_Definitions::HTTP_BAD_REQUEST);
             }
         }
 
@@ -71,22 +81,22 @@
                         ], REST_Controller_Definitions::HTTP_BAD_REQUEST);
                 return;
             }
-            if ($this->Equipe_model->delete($id)) {
+            if ($this->Escalacao_model->delete($id)) {
                 $this->set_response([
                     'status' => true,
-                    'message' => 'Equipe deletado!'
+                    'message' => 'Escalação deletada.'
                         ], REST_Controller_Definitions::HTTP_OK);
             } else {
                 $this->set_response([
                     'status' => false,
-                    'error' => 'Falha ao deletar Equipe'
+                    'error' => 'Falha ao deletar escalação'
                         ], REST_Controller_Definitions::HTTP_BAD_REQUEST);
             }
         }
 
         public function index_put() {
             $id = (int) $this->get('id');
-            if ((!$this->put('nomeequipe')) || (!$this->put('cd_usuario')) || ($id <= 0)) {
+            if ((!$this->put('cd_equipe')) || (!$this->put('cd_jogador')) || (!$this->put('cd_rodada')) || ($id <= 0)) {
                 $this->set_response([
                     'status' => false,
                     'error' => 'Campo não preenchidos'
@@ -94,25 +104,25 @@
                 return;
             }
             $data = array(
-                'nomeequipe' => $this->put('nomeequipe'),
-                'cd_usuario' => $this->put('cd_usuario')
+                'cd_equipe' => $this->put('cd_equipe'),
+                'cd_jogador' => $this->put('cd_jogador'),
+                'cd_rodada' => $this->put('cd_rodada'),
+                'data_hora' => date('Y-m-d H:i:s')
             );
-            if ($this->Equipe_model->update($id, $data)) {
+            if ($this->Escalacao_model->update($id, $data)) {
                 $this->set_response([
                     'status' => true,
-                    'message' => 'Equipe alterado!'
+                    'message' => 'Escalação atualizada!'
                         ], REST_Controller_Definitions::HTTP_OK);
             } else {
                 $this->set_response([
                     'status' => false,
-                    'error' => 'Falha ao alterar Equipe'
+                    'error' => 'Falha ao atualizar escalação'
                         ], REST_Controller_Definitions::HTTP_BAD_REQUEST);
             }
         }
-
-
-
+    
+    
+    
+    
     }
-
-
-    ?>

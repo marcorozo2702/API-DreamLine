@@ -63,6 +63,8 @@ $route['rest/campeonato/(:num)'] = 'rest/campeonato/index/id/$1'; //url campeona
 $route['rest/rodada/(:num)'] = 'rest/rodada/index/id/$1'; //url rodada
 $route['rest/partida/(:num)'] = 'rest/partida/index/id/$1'; //url rodada
 $route['rest/pontuacao/(:num)'] = 'rest/pontuacao/index/id/$1'; //url rodada
+$route['rest/escalacao/(:num)'] = 'rest/escalacao/index/id/$1'; //url rodada
+
 
 
 

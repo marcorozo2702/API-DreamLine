@@ -18,7 +18,7 @@ class Equipe_model extends CI_Model {
 
 
     public function get() {
-        $this->db->select('tb_equipe.id as id_equipe,tb_equipe.nome as nome_equipe, tb_equipe.cd_usuario, tb_usuario.nome as nome_usuario ');
+        $this->db->select('tb_equipe.id as id_equipe,tb_equipe.nomeequipe as nomeequipe, tb_equipe.cd_usuario, tb_usuario.nome as nomeusuario ');
         $this->db->join('tb_usuario', 'tb_usuario.id = tb_equipe.cd_usuario', 'inner');
         $query = $this->db->get(self::table);
         return $query->result();
