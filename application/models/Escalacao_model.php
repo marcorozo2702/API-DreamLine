@@ -21,7 +21,7 @@ class Escalacao_model extends CI_Model {
     }
 
     public function get() {
-        $this->db->select(self::table . '.*,  tb_equipe.nome AS nomeequipe, tb_jogador.nome AS nomejogador,'
+        $this->db->select(self::table . '.*,  tb_equipe.nomeequipe AS nomeequipe, tb_jogador.nome AS nomejogador,'
         .' tb_rodada.nome AS nomerodada, tb_rodada.`data` AS datarodada');
         $this->db->join('tb_equipe', 'tb_equipe.id = tb_escalacao.cd_equipe', 'inner');
         $this->db->join('tb_rodada', 'tb_rodada.id = tb_escalacao.cd_rodada', 'inner');
@@ -30,7 +30,15 @@ class Escalacao_model extends CI_Model {
         return $query->result();
     }
 
-    public function insert($data = array()) {
+    public function getLastId(){
+        $this->db->select('tb_rodada.id');
+        $this->db->order_by('id', 'desc');
+        $this->db->limit(1);
+        $query = $this->db->get('tb_rodada');
+        return $query->row(0);
+    }
+
+    public function insert($data) {
         $this->db->insert(self::table, $data);
         return $this->db->affected_rows();
     }

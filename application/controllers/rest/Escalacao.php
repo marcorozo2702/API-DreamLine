@@ -44,27 +44,40 @@
         }
 
         public function index_post() {
-            if ((!$this->post('cd_equipe')) || (!$this->post('cd_jogador')) || (!$this->post('cd_rodada'))) {
+            //pega os dados vindo do POST em fomrato json
+            $dados = json_decode(file_get_contents("php://input"));
+            if ((!$dados->cd_equipe) || (!$dados->cd_jogador)) {
                 $this->set_response([
                     'status' => false,
                     'error' => 'Campo não preenchidos'
                         ], REST_Controller_Definitions::HTTP_BAD_REQUEST);
                 return;
             }
+            //retorna o ultimo id inserido na tabela de rodadas
+            $lastid = $this->Escalacao_model->getLastId();
+            //monsta a array com os dados recebidos 
             $data = array(
-                'cd_equipe' => $this->post('cd_equipe'),
-                'cd_jogador' => $this->post('cd_jogador'),
-                'cd_rodada' => $this->post('cd_rodada'),
+                'cd_equipe' => $dados->cd_equipe,
+                'cd_rodada' =>$lastid->id,
                 'data_hora' => date('Y-m-d H:i:s')
-
-
             );
-            if ($this->Escalacao_model->insert($data)) {
+            //foreach q percorre todos os dados da array de cd_jogador armazenando em $val e fazendo a inserção 
+            $success = 0;
+            foreach($dados->cd_jogador AS $val){
+                $data['cd_jogador'] = $val;
+                if($this->Escalacao_model->insert($data))
+                $success++;
+            }
+            //se conseguiu percorrer e inserir os dados (incluindo o cd_jogador) com sucesso retorna a mensagem de sucesso
+            
+            if ($success===count((array)$dados->cd_jogador)) {
                 $this->set_response([
                     'status' => true,
                     'message' => 'Escalação inserida.'
                         ], REST_Controller_Definitions::HTTP_OK);
-            } else {
+            } 
+            //se não, retorna falha na inserção
+            else {
                 $this->set_response([
                     'status' => false,
                     'error' => 'Falha ao inserir escalação'
