@@ -44,9 +44,9 @@
         }
 
         public function index_post() {
-            //pega os dados vindo do POST em fomrato json
+            //pega os dados vindo do POST em formato json
             $dados = json_decode(file_get_contents("php://input"));
-            if ((!$dados->cd_equipe) || (!$dados->cd_jogador)) {
+            if ((!$dados->cd_jogador)) {
                 $this->set_response([
                     'status' => false,
                     'error' => 'Campo não preenchidos'
@@ -55,9 +55,10 @@
             }
             //retorna o ultimo id inserido na tabela de rodadas
             $lastid = $this->Escalacao_model->getLastId();
+            $cd_equipe = $this->Escalacao_model->get_cd_equipe($this->input->get_request_header("Token"));
             //monsta a array com os dados recebidos 
             $data = array(
-                'cd_equipe' => $dados->cd_equipe,
+                'cd_equipe' => $cd_equipe->idequipe,
                 'cd_rodada' =>$lastid->id,
                 'data_hora' => date('Y-m-d H:i:s')
             );

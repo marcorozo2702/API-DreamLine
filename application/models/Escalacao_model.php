@@ -30,6 +30,15 @@ class Escalacao_model extends CI_Model {
         return $query->result();
     }
 
+    public function get_cd_equipe($token) {
+        $this->db->select('token.*, tb_usuario.id AS idusuario, tb_equipe.cd_usuario, tb_equipe.id AS idequipe');
+        $this->db->join('tb_usuario', 'tb_usuario.id = token.cd_usuario', 'inner');
+        $this->db->join('tb_equipe', 'tb_usuario.id=tb_equipe.cd_usuario', 'inner');
+        $this->db->where("token.apikey", $token);
+        $query = $this->db->get("token");
+        return $query->row();
+    }
+
     public function getLastId(){
         $this->db->select('tb_rodada.id');
         $this->db->order_by('id', 'desc');
