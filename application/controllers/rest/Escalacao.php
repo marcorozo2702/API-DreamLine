@@ -53,7 +53,7 @@
                         ], REST_Controller_Definitions::HTTP_BAD_REQUEST);
                 return;
             }
-            //retorna o ultimo id inserido na tabela de rodadas
+            //retorna o ultimo id inserido na tabela de rodadas e o cd_equipe de acordo com o usuario
             $lastid = $this->Escalacao_model->getLastId();
             $cd_equipe = $this->Escalacao_model->get_cd_equipe($this->input->get_request_header("Token"));
             //monsta a array com os dados recebidos 

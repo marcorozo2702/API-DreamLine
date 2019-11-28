@@ -23,7 +23,8 @@ class Partida_model extends CI_Model {
             $this->db->join('tb_rodada', 'tb_rodada.id = tb_partida.cd_rodada', 'inner');
             $this->db->join('tb_time AS time1', 'time1.id = tb_partida.cd_time1', 'inner');
             $this->db->join('tb_time AS time2', 'time2.id = tb_partida.cd_time2', 'inner');
-        $query = $this->db->get(self::table);
+            $this->db->order_by("data", "desc");
+            $query = $this->db->get(self::table);
         return $query->result();
     }
 
