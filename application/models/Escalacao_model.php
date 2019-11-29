@@ -47,6 +47,22 @@ class Escalacao_model extends CI_Model {
         return $query->row(0);
     }
 
+    public function verificausuario($data = array()){
+
+        $this->db->where('cd_equipe', $data['cd_equipe']);
+        $this->db->where('cd_rodada', $data['cd_rodada']);
+        $query = $this->db->get('tb_escalacao');
+        if(isset ($query)){
+            return true;
+        } else {
+            return false;
+        }
+        
+        
+    }
+
+
+
     public function insert($data) {
         $this->db->insert(self::table, $data);
         return $this->db->affected_rows();

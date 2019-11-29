@@ -52,6 +52,14 @@
 
         }
 
+        public function getEscalacaoPontos_get(){
+            $lastid = $this->Pontuacao_model->getLastId();
+            $data = $this->Pontuacao_model->getEscalacaoPontos($this->input->get_request_header("Token"),$lastid->id);
+            $this->set_response($data, REST_Controller_Definitions::HTTP_OK);
+
+
+        }
+
         public function index_post() {
             if ((!$this->post('pontos')) || (!$this->post('cd_partida')) || (!$this->post('cd_jogador'))) {
                 $this->set_response([

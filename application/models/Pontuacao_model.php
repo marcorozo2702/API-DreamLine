@@ -47,6 +47,19 @@ class Pontuacao_model extends CI_Model {
         return $query->row();
     }
 
+    public function getEscalacaoPontos($token, $lastid){
+        $this->db->select('tb_escalacao.cd_jogador, tb_jogador.nome AS nomejogador ,tb_equipe.nomeequipe, tb_pontuacao.pontos');
+        $this->db->join('tb_jogador', 'tb_jogador.id = tb_escalacao.cd_jogador', 'inner');
+        $this->db->join('tb_equipe', 'tb_escalacao.cd_equipe = tb_equipe.id', 'inner');
+        $this->db->join('tb_pontuacao', 'tb_jogador.id = tb_pontuacao.cd_jogador', 'inner');
+        $this->db->join('tb_usuario', 'tb_usuario.id = tb_equipe.cd_usuario', 'inner');
+        $this->db->join('token', 'token.cd_usuario = tb_usuario.id', 'inner');
+        $this->db->where("token.apikey", $token);
+        $this->db->where("tb_escalacao.cd_rodada", $lastid);
+        $query = $this->db->get("tb_escalacao");
+        return $query->result();
+    }
+
 
 
 
